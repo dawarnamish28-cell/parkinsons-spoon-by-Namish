@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Self-Stabilizing Spoon for Parkinson's</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      line-height: 1.6;
+      margin: 0;
+      padding: 0;
+      background-color: #f5f7fa;
+    }
+    header {
+      background-color: #2b7a78;
+      color: white;
+      padding: 1rem 2rem;
+      text-align: center;
+    }
+    section {
+      padding: 2rem;
+      max-width: 900px;
+      margin: auto;
+    }
+    h2 {
+      color: #3a506b;
+    }
+    .feature, .components, .code {
+      background-color: #e0f7fa;
+      padding: 1rem;
+      margin: 1rem 0;
+      border-left: 5px solid #2b7a78;
+    }
+    pre {
+      background-color: #f0f0f0;
+      padding: 1rem;
+      overflow-x: auto;
+    }
+    footer {
+      text-align: center;
+      padding: 1rem;
+      background-color: #2b7a78;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Self-Stabilizing Spoon</h1>
+    <p>Empowering People with Parkinson’s Disease</p>
+  </header>
+
+  <section>
+    <h2>What is it?</h2>
+    <p>The Self-Stabilizing Spoon is a smart assistive device designed to help people with Parkinson’s disease eat more comfortably. It uses motion sensors and motors to detect hand tremors and stabilize the spoon in real-time.</p>
+
+    <h2>Why is it Needed?</h2>
+    <p>Parkinson’s disease causes hand tremors that make eating difficult. This device enhances independence, reduces frustration, and brings dignity back to mealtime.</p>
+
+    <div class="feature">
+      <h3>Key Features</h3>
+      <ul>
+        <li>Built-in gyroscope and accelerometer</li>
+        <li>Real-time tremor compensation using motors</li>
+        <li>Rechargeable battery with long life</li>
+        <li>Interchangeable heads (spoon, fork)</li>
+        <li>Compact and ergonomic design</li>
+      </ul>
+    </div>
+
+    <div class="components">
+      <h3>Electronic Components Used</h3>
+      <ul>
+        <li>Arduino Nano or Uno</li>
+        <li>MPU6050 (Accelerometer + Gyroscope)</li>
+        <li>2 x Servo Motors (for X and Y axis stabilization)</li>
+        <li>Li-ion Battery + Charging Module</li>
+        <li>Switch / Button (to turn on/off)</li>
+        <li>Wires and Mounting Hardware</li>
+        <li>3D-Printed or Lightweight Spoon Mount</li>
+      </ul>
+    </div>
+
+    <div class="code">
+      <h3>Sample Arduino Code</h3>
+      <pre>
+#include &lt;Wire.h&gt;
+#include &lt;Servo.h&gt;
+#include &lt;MPU6050.h&gt;
+
+MPU6050 mpu;
+Servo servoX;
+Servo servoY;
+
+void setup() {
+  Wire.begin();
+  Serial.begin(9600);
+  mpu.initialize();
+  servoX.attach(9);
+  servoY.attach(10);
+}
+
+void loop() {
+  int16_t ax, ay, az, gx, gy, gz;
+  mpu.getMotion6(&ax, &ay, &az, &gx, &gy, &gz);
+
+  int angleX = map(gx, -17000, 17000, 0, 180);
+  int angleY = map(gy, -17000, 17000, 0, 180);
+
+  angleX = constrain(angleX, 60, 120);
+  angleY = constrain(angleY, 60, 120);
+
+  servoX.write(angleX);
+  servoY.write(angleY);
+
+  delay(20);
+}
+      </pre>
+    </div>
+
+    <h2>How It Works</h2>
+    <p>The MPU6050 senses angular changes due to tremors. Arduino processes these inputs and sends corrective signals to two servo motors, keeping the spoon level despite unintended hand movements.</p>
+
+    <h2>Benefits</h2>
+    <ul>
+      <li>Restores mealtime independence</li>
+      <li>Improves user confidence and comfort</li>
+      <li>Supports caregivers</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 Self-Stabilizing Spoon Project | Designed to Help by Namish</p>
+  </footer>
+
+</body>
+</html>
